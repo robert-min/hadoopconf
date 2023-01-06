@@ -1,5 +1,0 @@
-package crawling
-
-func parsing() {
-
-}
