@@ -6,8 +6,15 @@
 * 본 프로젝트에서는 Hadoop 설정을 가상서버 구축과 쿠버네티스 구축 과정을 분리하여 설정과정에 도움을 줄 수 있는 웹서비스를 제공한다.
 
 **Server : Golang**
+<br></br>
+
 **Client : React**
+<br></br>
+
 **Database : Mongo DB**
+<br></br>
+
+
 
 
 
