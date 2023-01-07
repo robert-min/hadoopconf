@@ -9,8 +9,7 @@ func configCrawling() {
 }
 
 func main() {
-	const writePath string = "./doc/core-site.txt"
-	// configCrawling()
+	const writePath string = "./doc/hdfs-site.txt"
 	crawling.Parsing(writePath)
 
 }
