@@ -8,8 +8,11 @@ func configCrawling() {
 	crawling.Crawler(crawlingURL, writePath)
 }
 
+func configToMongo() {
+	const writePath string = "./doc/core-site.txt"
+	crawling.ParsingCreate(writePath)
+}
+
 func main() {
-	const writePath string = "./doc/hdfs-site.txt"
-	crawling.Parsing(writePath)
 
 }

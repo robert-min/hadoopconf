@@ -3,6 +3,7 @@ package crawling
 import (
 	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -16,8 +17,8 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/readpref"
 )
 
-var dbName string = "config"
-var colName string = "hdfs"
+var dbName string = "myFirstDatabase"
+var colName string = "core"
 
 type config struct {
 	Name        string
@@ -25,7 +26,7 @@ type config struct {
 	Description string `bson:"description,omitempty"`
 }
 
-func Parsing(path string) {
+func ParsingCreate(path string) {
 	data, err := ioutil.ReadFile(path)
 	check(err)
 	docs := strings.Split(string(data), "\n\n")
@@ -66,23 +67,42 @@ func Parsing(path string) {
 	}
 }
 
+type Auth struct {
+	Username string
+	Password string
+}
+
+func getAuth() Auth {
+	data, err := os.Open("./crawling/secret/mongodb_auth.json")
+	check(err)
+	var auth Auth
+	byteValue, _ := ioutil.ReadAll(data)
+	json.Unmarshal(byteValue, &auth)
+	return auth
+}
+
 // connectionMongo to connect DB
 func connectionMongo() (client *mongo.Client, ctx context.Context, cancel context.CancelFunc) {
 
-	ctx, cancel = context.WithTimeout(context.Background(), 3*time.Second)
+	ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
 
 	uri := os.Getenv("MONGODB_URI")
 	if uri == "" {
 		log.Fatal("You must set your 'MONGODB_URI' environmental variable.")
 	}
+	Authorization := getAuth()
 
-	client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI(uri))
+	client, err := mongo.Connect(context.TODO(),
+		options.Client().ApplyURI(uri).SetAuth(options.Credential{
+			Username: Authorization.Username,
+			Password: Authorization.Password,
+		}))
 	check(err)
-	defer func() {
-		if err := client.Disconnect(context.TODO()); err != nil {
-			panic(err)
-		}
-	}()
+	// defer func() {
+	// 	if err := client.Disconnect(context.TODO()); err != nil {
+	// 		panic(err)
+	// 	}
+	// }()
 	// Ping the primary
 	if err := client.Ping(context.TODO(), readpref.Primary()); err != nil {
 		panic(err)
