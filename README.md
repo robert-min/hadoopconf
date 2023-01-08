@@ -10,9 +10,28 @@
 **Database : Mongo DB** &nbsp;
 <br></br>
 
+## 웹 페이지 디자인 개요
+### Home
+* On server / On Docker / On Kubernets 선택
+* On server : 설정 완료 후 xml 설정파일 다운로드 
+* On Docker : Docker 파일 다운로드
+* On Kubernets : Docker 파일 + yaml 실행파일 다운로드
 
+### Set
+* Option 선택(Name + Value)
+* Option - mouseOn일 때, 설명 window
+* Option Value - 직접 입력(기본값) 
+* 선택된 Option으로 xml 파일 미리보기
+
+### Download
+* 다운로드 링크
 
 ## To do list
+**1월 8일(일)**
+* mongodb connection err - finish(권한 인증 부분 문제 해결)
+**1월 7일(토)**
+* Data Parsing finish
+* mongodb connection err -ing
 **1월 6일(금)**
 * Hadoop config crawling(hdfs-default, core-default 완료)
 * mongodb setting
