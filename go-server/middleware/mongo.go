@@ -6,25 +6,14 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
-	"net/http"
 	"os"
 
-	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/readpref"
 )
 
 var dbName string = "myFirstDatabase"
-var colName string = "hdfs"
-
-var collection *mongo.Collection
-
-// create connection to mongo db
-func init() {
-	connectionDBInstance()
-}
 
 type Auth struct {
 	Username string
@@ -42,7 +31,7 @@ func getAuth() Auth {
 }
 
 // connectionDBInstance connect Mongo DB
-func connectionDBInstance() {
+func ConnectionDBInstance(colName string) *mongo.Collection {
 	uri := os.Getenv("MONGODB_URI")
 	if uri == "" {
 		log.Fatal("You must set your 'MONGODB_URI' environmental variable.")
@@ -61,39 +50,8 @@ func connectionDBInstance() {
 		panic(err)
 	}
 
-	collection = client.Database(dbName).Collection(colName)
+	collection := client.Database(dbName).Collection(colName)
 	fmt.Println("Collection instance connect")
 
-}
-
-func GetAllHdfsConfig(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Context-Type", "application/x-www-form-urlencoded")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	configs := getAllConfig()
-	json.NewEncoder(w).Encode(configs)
-}
-
-func getAllConfig() []primitive.M {
-	cur, err := collection.Find(context.Background(), bson.D{{}})
-	check(err)
-
-	var results []primitive.M
-	for cur.Next(context.Background()) {
-		var result bson.M
-		err = cur.Decode(&result)
-		check(err)
-		results = append(results, result)
-	}
-	if err := cur.Err(); err != nil {
-		log.Fatal(err)
-	}
-	cur.Close(context.Background())
-	return results
-}
-
-func check(e error) {
-	if e != nil {
-		fmt.Println(e)
-		panic(e)
-	}
+	return collection
 }

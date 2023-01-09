@@ -31,6 +31,11 @@
 * 다운로드 링크
 
 ## To do list
+**1월 9일(월)**
+* hdfs GET RestAPI 생성
+* set page Get RestAPI 확인
+<br></br>
+
 **1월 8일(일)**
 * mongodb connection err - finish(권한 인증 부분 문제 해결)
 <br></br>
