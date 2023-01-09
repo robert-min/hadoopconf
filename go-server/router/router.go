@@ -8,7 +8,7 @@ import (
 func MakeHandler() *mux.Router {
 	router := mux.NewRouter()
 
-	router.HandleFunc("/api/task", middleware.GetAllConfig).Methods("GET", "OPTIONS")
+	router.HandleFunc("/api/hdfs", middleware.GetAllHdfsConfig).Methods("GET", "OPTIONS")
 
 	return router
 }

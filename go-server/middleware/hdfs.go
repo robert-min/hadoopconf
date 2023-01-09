@@ -66,14 +66,14 @@ func connectionDBInstance() {
 
 }
 
-func GetAllConfig(w http.ResponseWriter, r *http.Request) {
+func GetAllHdfsConfig(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Context-Type", "application/x-www-form-urlencoded")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
-	results := getAllTask()
-	fmt.Println(results)
+	configs := getAllConfig()
+	json.NewEncoder(w).Encode(configs)
 }
 
-func getAllTask() []primitive.M {
+func getAllConfig() []primitive.M {
 	cur, err := collection.Find(context.Background(), bson.D{{}})
 	check(err)
 
