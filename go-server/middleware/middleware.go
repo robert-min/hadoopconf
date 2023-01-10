@@ -15,41 +15,21 @@ import (
 func GetAllHdfsConfig(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Context-Type", "application/x-www-form-urlencoded")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
-	configs := getHdfsConfigDB()
+	configs := getConfigDB("hdfs")
 	json.NewEncoder(w).Encode(configs)
 }
 
-// getHdfsConfigDB get Hdfs config data on mongodb
-func getHdfsConfigDB() []primitive.M {
-	collection := ConnectionDBInstance("hdfs")
-	cur, err := collection.Find(context.Background(), bson.D{{}})
-	check(err)
-
-	var results []primitive.M
-	for cur.Next(context.Background()) {
-		var result bson.M
-		err = cur.Decode(&result)
-		check(err)
-		results = append(results, result)
-	}
-	if err := cur.Err(); err != nil {
-		log.Fatal(err)
-	}
-	cur.Close(context.Background())
-	return results
-}
-
-// GetAllHdfsConfig get Hdfs config data API
+// GetAllCoreConfig get Core config data API
 func GetAllCoreConfig(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Context-Type", "application/x-www-form-urlencoded")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
-	configs := getCoreConfigDB()
+	configs := getConfigDB("core")
 	json.NewEncoder(w).Encode(configs)
 }
 
-// getHdfsConfigDB get Hdfs config data on mongodb
-func getCoreConfigDB() []primitive.M {
-	collection := ConnectionDBInstance("core")
+// getConfigDB get colName config data on mongodb
+func getConfigDB(colName string) []primitive.M {
+	collection := ConnectionDBInstance(colName)
 	cur, err := collection.Find(context.Background(), bson.D{{}})
 	check(err)
 
