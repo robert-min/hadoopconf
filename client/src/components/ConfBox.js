@@ -6,7 +6,8 @@ const Confbox = ({conf}) => {
     <ul>
       {conf.map((c) => (
         <li key={c.name}>
-          {c.name} : {c.description}
+          {c.name}
+          <p>{c.description}</p>
         </li>
       ))}
     </ul>

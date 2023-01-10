@@ -1,0 +1,20 @@
+.configbox{
+    width: 55%;
+    float: left;
+    border: 2px;
+}
+
+.typingbox{
+    width: 40%;
+    float: right;
+    border: 1px solid gray;
+}
+
+.typingform{
+    margin-left: 5%;
+}
+
+.typingarea{
+    width: 90%;
+    height: 1000px;
+}
